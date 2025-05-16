@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blade & Fade Barbershop - Estilo Urbano Auténtico</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✂️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Blade & Fade Palette */
+            --primary-color-blade: #1A1A1A; 
+            --secondary-color-blade: #2C2C2C; 
+            --accent-color-blade: #007CF0;   
+            --accent-color-hover-blade: #005bb5; 
+            --text-color-blade: #F5F5F5;       
+            --text-color-medium-blade: #A0A0A0; 
+            --bg-color-blade: var(--primary-color-blade); 
+            --card-bg-blade: var(--secondary-color-blade);
+
+            --primary-color: var(--accent-color-blade); 
+            --accent-color: var(--accent-color-blade); 
+            --text-color: var(--text-color-blade);
+            --bg-color: var(--bg-color-blade);
+            --light-gray: #333; 
+
+            --font-headings: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; 
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-color-blade);
+            background-color: var(--bg-color-blade);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 0; 
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-headings);
+            color: var(--text-color-blade); 
+            margin-bottom: 0.8em;
+            line-height: 1.2;
+        }
+        h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; text-transform: uppercase; }
+        h2 { text-align: center; font-size: clamp(1.8rem, 5vw, 2.8rem); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px; }
+        h3 { font-size: clamp(1.5rem, 4vw, 2rem); color: var(--accent-color-blade); }
+        h4 { font-size: clamp(1.2rem, 3vw, 1.5rem); color: var(--text-color-blade); }
+        p { margin-bottom: 1em; color: var(--text-color-medium-blade); }
+        a { color: var(--accent-color-blade); text-decoration: none; transition: color var(--transition-speed) ease; }
+        a:hover { color: var(--accent-color-hover-blade); }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .hero::before,
+        .map-container iframe,
+        .logo-svg, /* Si tuvieras un logo SVG principal a color */
+        .google-reviews-section .btn svg /* Asegurar que los iconos de botones no se pongan en B&N */
+         {
+            filter: none !important;
+        }
+        .img-color { filter: none !important; } /* Clase para imágenes que DEBEN tener color */
+
+        .gallery-item-preview img,
+        .artist-photo,
+        .artist-mini-gallery img,
+        .styles-gallery-grid img {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+        .gallery-item-preview:hover img,
+        .artist-card:hover .artist-photo,
+        .styles-gallery-grid .gallery-image-container:hover img {
+            filter: grayscale(0%);
+        }
+
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; background-color: var(--accent-color-blade); color: var(--primary-color-blade); padding: 12px 25px; text-decoration: none; font-weight: bold; text-transform: uppercase; border-radius: 5px; border: 2px solid var(--accent-color-blade); cursor: pointer; font-family: var(--font-headings); position: relative; overflow: hidden; transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
+        .btn svg { fill: currentColor; margin-right: 8px; width: 18px; height: 18px; }
+        .btn:hover { background-color: var(--accent-color-hover-blade); border-color: var(--accent-color-hover-blade); color: var(--primary-color-blade); transform: translateY(-3px) scale(1.02); box-shadow: 0 4px 10px rgba(0, 124, 240, 0.3); }
+        .btn:active { transform: translateY(-1px) scale(0.98); box-shadow: 0 2px 5px rgba(0, 124, 240, 0.2); }
+        .btn-secondary { background-color: transparent; color: var(--accent-color-blade); border: 2px solid var(--accent-color-blade); }
+        .btn-secondary:hover { background-color: var(--accent-color-blade); color: var(--primary-color-blade); }
+        .btn .btn-text { transition: opacity 0.2s ease-in-out; }
+        .btn.loading .btn-text { opacity: 0; }
+        .btn .loader { display: none; border: 3px solid rgba(0,0,0,0.3); border-radius: 50%; border-top-color: var(--primary-color-blade); width: 20px; height: 20px; animation: spin 1s linear infinite; position: absolute; top: 50%; left: 50%; margin-top: -10px; margin-left: -10px; }
+        .btn.loading .loader { display: block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        header { background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; width: 90%; max-width: 1100px; margin: 0 auto; }
+        .logo { font-family: var(--font-headings); font-weight: 900; font-size: 1.8rem; color: var(--text-color-blade); text-decoration: none; text-transform: uppercase; }
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-color-medium-blade); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.9rem; position: relative; padding-bottom: 5px; transition: color var(--transition-speed) ease; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; transform: translateX(-50%); background-color: var(--accent-color-blade); transition: width var(--transition-speed) cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 70%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-color-blade); }
+        .burger-menu { display: none; cursor: pointer; color: var(--text-color-blade); padding: 5px; }
+        .burger-menu svg { display: block; width: 25px; height: 25px; fill: var(--text-color-blade); }
+
+        main > section { padding: 120px 0 80px; min-height: 80vh; display: none; }
+        main > section.active { display: block; animation: fadeInSection 0.5s ease-out forwards; }
+        #home { padding-top: 0; min-height: 100vh; }
+        #home.active { animation: none; }
+        @keyframes fadeInSection { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; padding: 20px; overflow: hidden; }
+        .hero::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://picsum.photos/seed/bladefadehero/1200/800?blur=1') no-repeat center center/cover; z-index: -1; filter: saturate(0.8) grayscale(30%); }
+        .hero h1 { color: var(--text-color-blade); text-shadow: 2px 2px 8px rgba(0,0,0,0.7); margin-bottom: 30px; }
+        .hero .btn { font-size: clamp(1rem, 2.5vw, 1.2rem); padding: 15px 35px; margin-bottom: 20px; }
+        .hero .cta-secondary-link { color: var(--text-color-blade); font-weight: 600; font-size: clamp(0.9rem, 2vw, 1.1rem); text-decoration: underline; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.3s ease; }
+        .hero .cta-secondary-link:hover { color: var(--accent-color-blade); }
+
+        .intro-blade { background-color: var(--secondary-color-blade); padding: 60px 0; text-align: center; }
+        .intro-blade .container { max-width: 750px; }
+        .intro-blade h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--text-color-blade); margin-bottom: 20px; text-transform: none; }
+        .intro-blade p { font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--text-color-medium-blade); line-height: 1.8; }
+
+        .home-gallery-preview { padding: 80px 0; background-color: var(--primary-color-blade); }
+        .home-gallery-preview h2 { margin-bottom: 50px; }
+        .gallery-grid-preview { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .gallery-item-preview { background-color: var(--card-bg-blade); border-radius: 8px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; position: relative; }
+        .gallery-item-preview:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 10px 25px rgba(0, 124, 240, 0.2); }
+        .gallery-item-preview img { width: 100%; height: 300px; object-fit: cover; }
+        .gallery-item-preview .caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: var(--text-color-blade); padding: 20px 15px 15px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease; }
+        .gallery-item-preview:hover .caption { opacity: 1; transform: translateY(0); }
+        .home-gallery-preview .text-center { text-align: center; }
+
+        .google-reviews-section { background-color: var(--secondary-color-blade); padding: 60px 0; text-align: center; }
+        .google-reviews-section h2 { margin-bottom: 30px; }
+        .review-placeholder { max-width: 600px; margin: 0 auto 20px auto; padding: 20px; background-color: var(--primary-color-blade); border-radius: 8px; border-left: 5px solid var(--accent-color-blade); text-align: left; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
+        .review-placeholder .stars { color: #FFD700; margin-bottom: 10px; font-size: 1.2rem; }
+        .review-placeholder p { font-style: italic; color: var(--text-color-medium-blade); margin-bottom: 5px; }
+        .review-placeholder .reviewer-name { font-weight: bold; color: var(--text-color-blade); text-align: right; font-size: 0.9rem; }
+        .google-reviews-section .btn { margin-top: 20px; }
+
+        .key-features-blade { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 30px; padding: 80px 0; background-color: var(--secondary-color-blade); }
+        .feature-blade { flex-basis: 300px; padding: 30px 25px; border: 2px solid transparent; border-radius: 10px; background-color: var(--primary-color-blade); box-shadow: 0 3px 8px rgba(0,0,0,0.25); transition: box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease, transform var(--transition-speed) ease; will-change: box-shadow, border-color, transform; }
+        .feature-blade:hover { transform: translateY(-10px); box-shadow: 0 12px 25px rgba(0,0,0,0.35); border-color: var(--accent-color-blade); }
+        .feature-blade .icon { color: var(--accent-color-blade); margin-bottom: 20px; display: inline-flex; align-items: center; justify-content: center; width: 65px; height: 65px; border: 2px solid var(--accent-color-blade); border-radius: 50%; transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, transform var(--transition-speed) ease; will-change: transform, background-color, color; transform: translateZ(0); backface-visibility: hidden; }
+        .feature-blade .icon svg { width: 50%; height: 50%; stroke: currentColor; fill: none; transition: transform var(--transition-speed) ease; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
+        .feature-blade:hover .icon { background-color: var(--accent-color-blade); color: var(--primary-color-blade); }
+        .feature-blade:hover .icon svg { transform: scale(1.2) rotate(-5deg) translateZ(0); }
+        .feature-blade h4 { font-size: 1.4rem; color: var(--text-color-blade); margin-bottom: 10px; text-transform: uppercase; }
+        .feature-blade p { font-size: 0.95rem; line-height: 1.6; color: var(--text-color-medium-blade); }
+
+        #servicios { background-color: var(--primary-color-blade); }
+        .services-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+        .service-category h3 { font-size: 1.8rem; color: var(--text-color-blade); border-bottom: 2px solid var(--accent-color-blade); padding-bottom: 15px; margin-bottom: 30px; text-transform: uppercase; }
+        .service-item { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 20px 15px; border-radius: 8px; background-color: var(--card-bg-blade); box-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 15px; transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; will-change: transform, box-shadow; }
+        .service-item:hover { transform: translateX(8px) scale(1.02); box-shadow: 0 6px 15px rgba(0, 124, 240, 0.15); background-color: hsl(from var(--card-bg-blade) h s calc(l + 5%)); }
+        .service-details { display: flex; align-items: center; flex-grow: 1; }
+        .service-details .icon { margin-right: 15px; color: var(--accent-color-blade); width: 22px; height: 22px; transition: transform var(--transition-speed) ease; }
+        .service-details .icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; }
+        .service-item:hover .service-details .icon { transform: rotate(5deg) scale(1.1); }
+        .service-name { font-weight: 700; font-size: 1.2rem; color: var(--text-color-blade); text-transform: uppercase; letter-spacing: 0.5px; }
+        .service-description-blade { font-size: 0.9rem; color: var(--text-color-medium-blade); flex-basis: 100%; padding-left: calc(22px + 15px); margin-top: 8px; }
+        .service-price { font-weight: bold; font-size: 1.2rem; color: var(--accent-color-blade); white-space: nowrap; margin-left: 15px; }
+
+        #artistas { background-color: var(--primary-color-blade); }
+        .artists-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .artist-card { background-color: var(--card-bg-blade); border-radius: 10px; padding: 25px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .artist-card:hover { transform: translateY(-10px); box-shadow: 0 10px 25px rgba(0, 124, 240, 0.2); }
+        .artist-card .artist-photo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; border: 4px solid var(--accent-color-blade); }
+        .artist-card h4 { font-size: 1.6rem; color: var(--text-color-blade); margin-bottom: 8px; text-transform: uppercase; }
+        .artist-card .artist-specialty { font-size: 0.9rem; color: var(--accent-color-blade); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; }
+        .artist-card .artist-bio { font-size: 0.95rem; color: var(--text-color-medium-blade); margin-bottom: 20px; line-height: 1.7; }
+        .artist-mini-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+        .artist-mini-gallery img { width: 100%; height: 80px; object-fit: cover; border-radius: 5px; opacity: 0.8; transition: opacity 0.3s ease, filter 0.3s ease; }
+        .artist-mini-gallery img:hover { opacity: 1; filter: grayscale(0%); }
+
+        #reservas { background-color: var(--primary-color-blade); padding-top: 100px; padding-bottom: 100px; }
+        .booking-widget-container { background-color: var(--secondary-color-blade); border-radius: 10px; padding: 30px 35px; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .booking-widget-container h3 { color: var(--text-color-blade); text-align: left; font-size: 1.8rem; margin-bottom: 25px; border-bottom: 1px solid var(--light-gray); padding-bottom: 15px; }
+        .booking-flex-container { display: flex; gap: 30px; flex-wrap: wrap; }
+        .booking-options { flex: 1; min-width: 280px; }
+        .booking-details-preview { flex: 1; min-width: 280px; background-color: var(--primary-color-blade); padding: 20px; border-radius: 8px; }
+        .form-group-booking { margin-bottom: 20px; }
+        .form-group-booking label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: var(--text-color-medium-blade); }
+        .form-group-booking select, .form-group-booking input[type="text"] { width: 100%; padding: 12px; background-color: var(--primary-color-blade); color: var(--text-color-blade); border: 1px solid var(--light-gray); border-radius: 5px; font-size: 1rem; }
+        .calendar-placeholder-widget { background-color: var(--primary-color-blade); border: 1px dashed var(--light-gray); height: 250px; display: flex; justify-content: center; align-items: center; color: var(--text-color-medium-blade); font-style: italic; border-radius: 5px; margin-bottom: 20px; padding: 15px; text-align: center; }
+        .time-slots-placeholder { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; }
+        .time-slot-btn { background-color: var(--primary-color-blade); color: var(--text-color-medium-blade); border: 1px solid var(--light-gray); padding: 10px; border-radius: 5px; text-align: center; cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+        .time-slot-btn:hover, .time-slot-btn.selected { background-color: var(--accent-color-blade); color: var(--primary-color-blade); border-color: var(--accent-color-blade); }
+        .booking-details-preview h4 { color: var(--accent-color-blade); margin-bottom: 15px; font-size: 1.3rem; }
+        .booking-details-preview p { font-size: 0.95rem; color: var(--text-color-medium-blade); margin-bottom: 8px; }
+        .booking-details-preview p strong { color: var(--text-color-blade); }
+        .booking-widget-container .btn { width: 100%; margin-top: 25px; padding: 15px; }
+
+        #galeria { background-color: var(--primary-color-blade); }
+        .gallery-filters button { background: transparent; border: 2px solid var(--accent-color-blade); color: var(--accent-color-blade); padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 25px; font-weight: 600; font-family: var(--font-headings); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; transition: all var(--transition-speed) ease, transform var(--transition-speed) ease; }
+        .gallery-filters button:hover { background-color: var(--accent-color-blade); color: var(--primary-color-blade); transform: translateY(-2px) scale(1.03); }
+        .gallery-filters button.active { background-color: var(--accent-color-blade); color: var(--primary-color-blade); transform: scale(1.05) translateY(-2px); box-shadow: 0 3px 8px rgba(0, 124, 240, 0.3); }
+        .styles-gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .styles-gallery-grid .gallery-image-container { position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .styles-gallery-grid img { width: 100%; height: 350px; object-fit: cover; transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease; will-change: transform, filter; }
+        .styles-gallery-grid .gallery-image-container:hover img { transform: scale(1.1); filter: grayscale(0%); }
+        .styles-gallery-grid .image-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 124, 240, 0.7); color: var(--text-color-blade); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; transition: opacity 0.4s ease; padding: 20px; }
+        .styles-gallery-grid .gallery-image-container:hover .image-overlay { opacity: 1; }
+        .styles-gallery-grid .image-overlay h4 { color: var(--text-color-blade); margin-bottom: 10px; font-size: 1.3rem; text-transform: uppercase; }
+        .styles-gallery-grid .image-overlay p { color: var(--text-color-blade); font-size: 0.9rem; }
+        .fame-wall-cta { background-color: var(--card-bg-blade); padding: 30px; border-radius: 8px; text-align: center; margin-top: 50px; border: 1px dashed var(--accent-color-blade); }
+        .fame-wall-cta h3 { color: var(--accent-color-blade); margin-bottom: 15px; font-size: 1.6rem; }
+        .fame-wall-cta p { color: var(--text-color-medium-blade); margin-bottom: 20px; font-size: 1rem; }
+        .fame-wall-cta strong { color: var(--text-color-blade); }
+
+        #contacto { background-color: var(--secondary-color-blade); }
+        .contact-grid { display: grid; grid-template-columns: 1fr; gap: 50px; }
+         @media (min-width: 769px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+        .contact-info-item { margin-bottom: 25px; }
+        .contact-info-item strong { color: var(--accent-color-blade); font-size: 1.2rem; display: flex; align-items: center; margin-bottom: 10px; }
+        .contact-info-item strong .icon { margin-right: 10px; display: inline-flex; align-items: center; }
+        .contact-info-item strong .icon svg { width: 18px; height: 18px; fill: var(--accent-color-blade); }
+        .contact-info-item p, .contact-info-item .opening-hours, .contact-info-item .social-links, .contact-info-item > div > a.btn { padding-left: calc(18px + 10px); color: var(--text-color-medium-blade); font-size: 1rem; }
+        .contact-info-item .opening-hours p { margin-bottom: 5px; }
+        .contact-info-item > div > a.btn { background-color: var(--accent-color-blade); color: var(--primary-color-blade); margin-bottom: 10px; margin-right: 10px; padding: 10px 20px; }
+        .contact-info-item > div > a.btn svg { width: 16px; height: 16px; margin-right: 6px; fill: currentColor; }
+        .contact-info-item > div > a.btn:hover { background-color: var(--accent-color-hover-blade); }
+        .contact-info-item > div > a.btn-secondary { background-color: transparent; color: var(--accent-color-blade); border-color: var(--accent-color-blade); }
+        .contact-info-item > div > a.btn-secondary:hover { background-color: var(--accent-color-blade); color: var(--primary-color-blade); }
+        .contact-info-item .social-links a { color: var(--text-color-medium-blade); display: inline-flex; align-items: center; margin-right: 20px; font-size: 1rem; font-weight: 600; transition: color var(--transition-speed) ease; }
+        .contact-info-item .social-links a svg { width: 18px; height: 18px; fill: var(--text-color-medium-blade); margin-right: 8px; transition: fill var(--transition-speed) ease; }
+        .contact-info-item .social-links a:hover { color: var(--accent-color-blade); }
+        .contact-info-item .social-links a:hover svg { fill: var(--accent-color-blade); }
+        .map-container { border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid #333; height: 380px; overflow: hidden; }
+        .map-container iframe { filter: grayscale(80%) contrast(1.1) brightness(0.9); transition: filter 0.3s ease; width: 100%; height: 100%; border: 0; }
+        .map-container:hover iframe { filter: grayscale(0%) contrast(1) brightness(1); }
+
+        footer { background-color: #111; color: var(--text-color-medium-blade); padding: 40px 0; text-align: center; }
+        footer .social-links { margin-bottom: 15px; }
+        footer .social-links a { color: var(--text-color-medium-blade); margin: 0 12px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        footer .social-links a:hover { color: var(--accent-color-blade); }
+        footer p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 5px; }
+        footer p:last-child { margin-bottom: 0; }
+
+        #scrollToTopBtn { display: none; position: fixed; bottom: 25px; right: 25px; z-index: 999; border: none; outline: none; background-color: var(--accent-color-blade); color: var(--primary-color-blade); cursor: pointer; padding: 10px 13px; border-radius: 50%; font-size: 20px; line-height: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.25); transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
+        #scrollToTopBtn:hover { background-color: var(--accent-color-hover-blade); transform: scale(1.1) translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 1.5rem; } 
+            .nav-links { background-color: rgba(26, 26, 26, 0.97); }
+            .burger-menu svg { fill: var(--text-color-blade); }
+            .hero h1 { font-size: clamp(2rem, 7vw, 3.5rem); }
+            .home-gallery-preview { padding: 60px 0; }
+            .gallery-item-preview img { height: 250px; }
+            .key-features-blade { padding: 60px 0; }
+            .feature-blade { flex-basis: 100%; max-width: 380px; }
+            .artist-card .artist-photo { width: 120px; height: 120px; }
+            .booking-flex-container { flex-direction: column; } 
+            .booking-widget-container { padding: 25px 20px; }
+            .contact-info-item strong { font-size: 1.1rem; }
+            .contact-info-item p, .contact-info-item .opening-hours, .contact-info-item .social-links, .contact-info-item > div > a.btn { padding-left: 0; font-size: 0.95rem; }
+            .contact-info-item > div > a.btn { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; margin-right: 0; text-align: center; }
+            .contact-info-item > div > a.btn svg { margin-right: 8px; margin-left: 0; margin-bottom: 0; display: inline-block; }
+            .contact-info-item > div > a.btn .btn-text { display: inline; }
+            .map-container { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="#home" class="logo nav-item">BLADE & FADE</a>
+            <div class="burger-menu" id="burgerMenu">
+                <svg id="burgerIconOpen" viewBox="0 0 100 80" width="25" height="25"><rect width="100" height="15" rx="8"></rect><rect y="30" width="100" height="15" rx="8"></rect><rect y="60" width="100" height="15" rx="8"></rect></svg>
+                <svg id="burgerIconClose" viewBox="0 0 100 100" width="25" height="25" style="display:none;"><rect x="10" y="42.5" width="80" height="15" rx="8" transform="rotate(45 50 50)"></rect><rect x="10" y="42.5" width="80" height="15" rx="8" transform="rotate(-45 50 50)"></rect></svg>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-item active">Inicio</a></li>
+                <li><a href="#artistas" class="nav-item">Peluqueros</a></li>
+                <li><a href="#servicios" class="nav-item">Servicios</a></li>
+                <li><a href="#galeria" class="nav-item">Estilos</a></li>
+                <li><a href="#reservas" class="nav-item">Reservar</a></li>
+                <li><a href="#contacto" class="nav-item">Visítanos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="active">
+            <div class="hero">
+                <h1>DEFINE TU FLOW.</h1>
+                <a href="#reservas" class="btn nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    Reservar Ahora
+                </a>
+                <a href="#galeria" class="cta-secondary-link nav-item">Ver Estilos</a>
+            </div>
+
+            <div class="intro-blade">
+                <div class="container">
+                    <h2>EXPERTOS EN TENDENCIAS URBANAS. AMBIENTE COOL, MÚSICA Y LOS MEJORES CORTES DE LA CIUDAD.</h2>
+                    <p>En Blade & Fade somos más que una barbería. Somos tu punto de encuentro para el estilo, los cortes más frescos y ese ambiente que buscas. Aquí, tu flow es nuestra prioridad.</p>
+                </div>
+            </div>
+
+            <div class="home-gallery-preview">
+                <div class="container">
+                    <h2>ÚLTIMOS ESTILOS</h2>
+                    <div class="gallery-grid-preview">
+                        <div class="gallery-item-preview"><img src="https://picsum.photos/seed/bladefade1/400/400?blur=1" alt="Corte Fade Urbano Moderno"><div class="caption">Fade Texturizado</div></div>
+                        <div class="gallery-item-preview"><img src="https://picsum.photos/seed/bladecreative1/400/400?blur=1" alt="Corte con diseño tribal"><div class="caption">Diseño Freehand</div></div>
+                        <div class="gallery-item-preview"><img src="https://picsum.photos/seed/blademullet1/400/400?blur=1" alt="Mullet moderno con flow"><div class="caption">Modern Mullet</div></div>
+                        <div class="gallery-item-preview"><img src="https://picsum.photos/seed/bladecrop1/400/400?blur=1" alt="Crop texturizado"><div class="caption">Textured Crop</div></div>
+                    </div>
+                    <div class="text-center">
+                        <a href="#galeria" class="btn btn-secondary nav-item">Ver Galería Completa</a>
+                    </div>
+                </div>
+            </div>
+            
+            <section class="google-reviews-section">
+                <div class="container">
+                    <h2>LO QUE DICEN NUESTROS CLIENTES</h2>
+                    <div class="review-placeholder">
+                        <div class="stars">★★★★★</div>
+                        <p>"¡El mejor corte que me han hecho! Alex es un crack, entendió al toque lo que quería. El ambiente de 10."</p>
+                        <p class="reviewer-name">- Marcos G.</p>
+                    </div>
+                    <div class="review-placeholder">
+                        <div class="stars">★★★★★</div>
+                        <p>"Sofia me hizo un cambio de look increíble con el color. Súper profesional y la barbería tiene toda la onda."</p>
+                        <p class="reviewer-name">- Carla L.</p>
+                    </div>
+                    <a href="#" target="_blank" class="btn btn-secondary img-color">Ver más reseñas en Google</a>
+                </div>
+            </section>
+
+             <div class="key-features-blade">
+                <div class="container">
+                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px;">
+                        <div class="feature-blade"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div><h4>ARTE EN CADA CORTE</h4><p>Dominamos las últimas tendencias y técnicas para un resultado impecable.</p></div>
+                        <div class="feature-blade"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M8 14h.01"></path><path d="M12 14h.01"></path><path d="M16 14h.01"></path><path d="M8 18h.01"></path><path d="M12 18h.01"></path><path d="M16 18h.01"></path></svg></div><h4>RESERVAS FÁCILES</h4><p>Agendá tu cita online en segundos, sin complicaciones.</p></div>
+                        <div class="feature-blade"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="7" r="3"></circle></svg></div><h4>VIBRA ÚNICA</h4><p>Buena música, ambiente relajado y la mejor onda de la ciudad.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="artistas">
+            <div class="container">
+                <h2>NUESTROS PELUQUEROS</h2>
+                <div class="artists-grid">
+                    <div class="artist-card"><img src="https://picsum.photos/seed/artist1/150/150" alt="Foto de Alex" class="artist-photo"><h4>ALEX "THE ACE"</h4><p class="artist-specialty">Fades & Diseños Old School</p><p class="artist-bio">Con 8 años de experiencia, Alex es un maestro de la navaja y los degradados clásicos con un toque moderno. Fan del hip-hop de los 90s.</p><div class="artist-mini-gallery"><img src="https://picsum.photos/seed/alext1/100/100" alt="Trabajo de Alex 1"><img src="https://picsum.photos/seed/alext2/100/100" alt="Trabajo de Alex 2"><img src="https://picsum.photos/seed/alext3/100/100" alt="Trabajo de Alex 3"></div><a href="#reservas" class="btn btn-secondary nav-item" data-artist="alex">Reservar con Alex</a></div>
+                    <div class="artist-card"><img src="https://picsum.photos/seed/artist2/150/150" alt="Foto de Sofia" class="artist-photo"><h4>SOFIA "STYLIST"</h4><p class="artist-specialty">Cortes Modernos & Color</p><p class="artist-bio">Sofia trae las últimas tendencias de pasarelas y redes a la barbería. Especialista en texturas, mullets y coloraciones atrevidas. Amante del skate.</p><div class="artist-mini-gallery"><img src="https://picsum.photos/seed/sofiat1/100/100" alt="Trabajo de Sofia 1"><img src="https://picsum.photos/seed/sofiat2/100/100" alt="Trabajo de Sofia 2"><img src="https://picsum.photos/seed/sofiat3/100/100" alt="Trabajo de Sofia 3"></div><a href="#reservas" class="btn btn-secondary nav-item" data-artist="sofia">Reservar con Sofia</a></div>
+                    <div class="artist-card"><img src="https://picsum.photos/seed/artist3/150/150" alt="Foto de Leo" class="artist-photo"><h4>LEO "FLOWMASTER"</h4><p class="artist-specialty">Freestyle Designs & Urban Cuts</p><p class="artist-bio">Leo es pura creatividad. Transforma cabezas en lienzos con sus diseños a mano alzada. Si buscas algo único, él es tu peluquero. Apasionado del graffiti.</p><div class="artist-mini-gallery"><img src="https://picsum.photos/seed/leot1/100/100" alt="Trabajo de Leo 1"><img src="https://picsum.photos/seed/leot2/100/100" alt="Trabajo de Leo 2"><img src="https://picsum.photos/seed/leot3/100/100" alt="Trabajo de Leo 3"></div><a href="#reservas" class="btn btn-secondary nav-item" data-artist="leo">Reservar con Leo</a></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicios">
+             <div class="container">
+                <h2>SERVICIOS & PRECIOS</h2>
+                <div class="services-grid">
+                    <div class="service-category"><h3>CORTES DE PELO</h3><div class="service-item"><div class="service-details"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22l5-5"></path><path d="M7 20l3-3"></path><path d="M12 15l3-3"></path><path d="M17 10l3-3"></path><path d="M19 8l3-3M3 21V11C3 7.68629 5.68629 5 9 5H19"></path></svg></span><span class="service-name">Fade Pro</span></div><span class="service-price">$1800</span></div><p class="service-description-blade">Tu degradado a medida, desde cero hasta la perfección. Incluye texturizado y peinado. (45 min)</p><div class="service-item"><div class="service-details"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg></span><span class="service-name">Corte Urbano (Tijera/Máquina)</span></div><span class="service-price">$1500</span></div><p class="service-description-blade">El clásico reinventado o tu estilo personal. Precisión y técnica. (30-40 min)</p><div class="service-item"><div class="service-details"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></span><span class="service-name">Diseño Freehand / Líneas</span></div><span class="service-price">Desde +$700</span></div><p class="service-description-blade">Dale un toque único a tu corte. El precio varía según complejidad. (15-30 min extra)</p></div>
+                    <div class="service-category"><h3>BARBERÍA & COLOR</h3><div class="service-item"><div class="service-details"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.078 16.303a8.264 8.264 0 0 0-1.148-1.398 7.29 7.29 0 0 0-8.236-2.055 7.29 7.29 0 0 0-6.526 2.055 8.263 8.263 0 0 0-1.066 5.196C3.474 22.07 7.856 22 12 22s8.526.071 8.934-2.501a8.264 8.264 0 0 0-.856-3.196z"></path><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path></svg></span><span class="service-name">Arreglo de Barba Premium</span></div><span class="service-price">$1000</span></div><p class="service-description-blade">Diseño, perfilado con navaja, aceites y bálsamo. Un ritual completo. (30 min)</p><div class="service-item"><div class="service-details"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18.74 13.4-5.78 5.78a1 1 0 0 1-1.42 0l-5.78-5.78a1 1 0 0 1 0-1.42l5.78-5.78a1 1 0 0 1 1.42 0Z"></path><path d="m12 8 2 2"></path><path d="M22 22 18 18"></path></svg></span><span class="service-name">Decoloración / Color Fantasía</span></div><span class="service-price">Consultar</span></div><p class="service-description-blade">Desde platinados hasta los colores más vibrantes. Presupuesto según trabajo. (Tiempo variable)</p></div>
+                    <div class="service-category"><h3>COMBOS PRO</h3><div class="service-item"><div class="service-details"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 15-1.539 1.538a3.665 3.665 0 0 1-5.182-5.182L8 4.646V4.5A2.5 2.5 0 0 1 10.5 2H18a2 2 0 0 1 2 2v3.5a2.5 2.5 0 0 1-2.5 2.5H16m-2.071-2.071A3.3 3.3 0 0 1 8.05 16.05"></path><circle cx="6.5" cy="17.5" r=".5"></circle><circle cx="15.5" cy="6.5" r=".5"></circle></svg></span><span class="service-name">FULL BLADE (Fade + Barba Premium)</span></div><span class="service-price">$2500</span></div><p class="service-description-blade">El pack definitivo para un look impecable y con todo el flow. (1h 15min)</p></div>
+                </div>
+                <div style="text-align: center; margin-top: 50px;"><a href="#reservas" class="btn nav-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Pide tu Cita Ahora</a></div>
+            </div>
+        </section>
+
+        <section id="galeria">
+            <div class="container">
+                <h2>ESTILOS & INSPIRACIÓN</h2>
+                <div class="gallery-filters">
+                    <button class="filter-btn active" data-filter="all">TODOS</button>
+                    <button class="filter-btn" data-filter="fade">FADES</button>
+                    <button class="filter-btn" data-filter="design">DISEÑOS</button>
+                    <button class="filter-btn" data-filter="mullet">MULLETS</button>
+                    <button class="filter-btn" data-filter="urban">URBANOS</button>
+                </div>
+                <div class="styles-gallery-grid">
+                    <div class="gallery-image-container" data-category="fade"><img src="https://picsum.photos/seed/stylefade1/400/350" alt="High Fade con Textura"><div class="image-overlay"><h4>High Fade Texturizado</h4><p>Corte por Alex</p></div></div>
+                    <div class="gallery-image-container" data-category="design"><img src="https://picsum.photos/seed/styledesign1/400/350" alt="Diseño Geométrico"><div class="image-overlay"><h4>Diseño Geométrico</h4><p>Arte por Leo</p></div></div>
+                    <div class="gallery-image-container" data-category="mullet"><img src="https://picsum.photos/seed/stylemullet1/400/350" alt="Mullet Moderno Desconectado"><div class="image-overlay"><h4>Mullet Desconectado</h4><p>Estilo por Sofia</p></div></div>
+                    <div class="gallery-image-container" data-category="urban"><img src="https://picsum.photos/seed/styleurban1/400/350" alt="Crop Francés con Flow"><div class="image-overlay"><h4>Crop Francés</h4><p>Tendencia Urbana</p></div></div>
+                    <div class="gallery-image-container" data-category="fade"><img src="https://picsum.photos/seed/stylefade2/400/350" alt="Low Fade Pulido"><div class="image-overlay"><h4>Low Fade Pulido</h4><p>Corte por Alex</p></div></div>
+                    <div class="gallery-image-container" data-category="design"><img src="https://picsum.photos/seed/styledesign2/400/350" alt="Líneas y Sombras"><div class="image-overlay"><h4>Tribal Fino</h4><p>Diseño por Leo</p></div></div>
+                    <div class="gallery-image-container" data-category="fade"><img src="https://picsum.photos/seed/stylefade3/400/350" alt="Mid Fade con Pompadour"><div class="image-overlay"><h4>Mid Fade Pompadour</h4><p>Clásico Moderno</p></div></div>
+                    <div class="gallery-image-container" data-category="urban"><img src="https://picsum.photos/seed/styleurban2/400/350" alt="Buzz Cut con Color"><div class="image-overlay"><h4>Buzz Cut & Color</h4><p>Estilo por Sofia</p></div></div>
+                </div>
+                <div class="fame-wall-cta"><h3>MURO DE LA FAMA #BladeAndFadeStyle</h3><p>¡Tu estilo merece ser visto! Sube tu foto a Instagram, etiquétanos <strong>@bladeandfadebarbershop</strong> y usa el hashtag <strong>#BladeAndFadeStyle</strong> para tener la oportunidad de aparecer aquí y en nuestras redes.</p><a href="https://instagram.com/bladeandfadebarbershop" target="_blank" class="btn">Ver en Instagram</a></div>
+            </div>
+        </section>
+
+        <section id="reservas">
+            <div class="container">
+                <h2>PROGRAMA TU CORTE</h2>
+                <div class="booking-widget-container">
+                    <h3>Elige cómo empezar:</h3>
+                    <div class="booking-flex-container">
+                        <div class="booking-options">
+                            <div class="form-group-booking">
+                                <label for="booking-service">1. Selecciona tu Servicio:</label>
+                                <select id="booking-service" name="booking-service">
+                                    <option value="">-- Elige un servicio --</option>
+                                    <option value="fade-pro">Fade Pro ($1800)</option>
+                                    <option value="corte-urbano">Corte Urbano ($1500)</option>
+                                    <option value="barba-premium">Arreglo de Barba Premium ($1000)</option>
+                                    <option value="full-blade">Full Blade (Fade + Barba) ($2500)</option>
+                                    <option value="diseno-color">Diseño / Color (Consultar)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-booking">
+                                <label for="booking-artist">2. Elige tu Peluquero (Opcional):</label>
+                                <select id="booking-artist" name="booking-artist">
+                                    <option value="any">Cualquier Peluquero Disponible</option>
+                                    <option value="alex">Alex "The Ace"</option>
+                                    <option value="sofia">Sofia "Stylist"</option>
+                                    <option value="leo">Leo "Flowmaster"</option>
+                                </select>
+                            </div>
+                            <div class="form-group-booking">
+                                <label>3. Elige Fecha y Hora:</label>
+                                <div class="calendar-placeholder-widget">
+                                    (Simulación de Calendario Interactivo) <br/> Navega y selecciona un día disponible.
+                                </div>
+                                <div class="time-slots-placeholder">
+                                    <button type="button" class="time-slot-btn">10:00</button>
+                                    <button type="button" class="time-slot-btn">10:30</button>
+                                    <button type="button" class="time-slot-btn selected">11:00</button>
+                                    <button type="button" class="time-slot-btn">11:30</button>
+                                    <button type="button" class="time-slot-btn">14:00</button>
+                                    <button type="button" class="time-slot-btn">14:30</button>
+                                    <button type="button" class="time-slot-btn">15:00</button>
+                                    <button type="button" class="time-slot-btn">15:30</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-details-preview">
+                            <h4>TU CITA</h4>
+                            <p><strong>Servicio:</strong> <span id="preview-service">Fade Pro</span></p>
+                            <p><strong>Artista:</strong> <span id="preview-artist">Alex "The Ace"</span></p>
+                            <p><strong>Fecha:</strong> <span id="preview-date">Martes, 23 de Julio</span></p>
+                            <p><strong>Hora:</strong> <span id="preview-time">11:00 hs</span></p>
+                            <p><strong>Duración aprox.:</strong> <span id="preview-duration">45 min</span></p>
+                            <p><strong>Precio:</strong> <span id="preview-price">$1800</span></p>
+                            <p style="font-size: 0.85rem; margin-top: 15px; color: var(--text-color-medium-blade);"><em>(Pagas en la barbería)</em></p>
+                        </div>
+                    </div>
+                     <a href="URL_SISTEMA_DE_RESERVAS_EXTERNO" target="_blank" class="btn" id="submitExternalBooking">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Continuar y Confirmar Reserva
+                    </a>
+                    <p style="text-align: center; font-size: 0.8rem; margin-top: 15px; color: var(--text-color-medium-blade);">Serás redirigido a nuestro sistema de agendamiento seguro.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto">
+            <div class="container">
+                <h2>VISÍTANOS & CONTACTO</h2>
+                <div class="contact-grid">
+                    <div class="contact-details">
+                        <div class="contact-info-item"><strong><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span> Dirección:</strong><p>Calle Corrientes 1234, Palermo Urbano, CABA</p></div>
+                        <div class="contact-info-item"><strong><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span> Horarios:</strong><div class="opening-hours"><p>Lunes a Viernes: 10:00 - 20:00 hs</p><p>Sábados: 10:00 - 17:00 hs</p><p>Domingos: Cerrado con Flow</p></div></div>
+                        <div class="contact-info-item"><strong><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span> Hablanos:</strong><div><a href="https://wa.me/NUMEROWHATSAPPBLADEFADE" target="_blank" class="btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.149-.174.198-.298.297-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01s-.521.074-.792.372c-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.203 5.076 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg> <span class="btn-text">WhatsApp</span></a><a href="tel:NUMEROTELEFONOBLADEFADE" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> <span class="btn-text">Llamar</span></a></div></div>
+                        <div class="contact-info-item"><strong><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></span>Redes:</strong><div class="social-links"><a href="https://instagram.com/bladeandfadebarbershop" target="_blank" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> Instagram</a><a href="https://tiktok.com/@bladeandfadebarbershop" target="_blank" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 0 .17.01.23.05.27.19.35.5.25.78s-.29.42-.57.44a17.73 17.73 0 01-3.06.01c-1.4-.05-2.65-.22-3.8-.6.56.58 1.22 1.07 1.95 1.49.76.44 1.59.75 2.47.93.48.09.97.15 1.46.18 1.43.12 2.86.01 4.24-.22a2.64 2.64 0 001.95-1.05c.44-.59.6-1.27.47-1.96s-.5-1.26-1.05-1.68c-1.08-.78-2.35-1.28-3.65-1.63-.96-.28-1.93-.49-2.9-.63-.18-.03-.35-.08-.5-.13a2.64 2.64 0 01-1.5-1.4c-.23-.58-.24-1.22-.05-1.82.15-.56.46-1.03.88-1.42.7-.64 1.5-.97 2.35-1.12.39-.07.8-.09 1.2-.1.79-.01 1.59-.01 2.38-.01a.6.6 0 00.5-.18c.24-.27.18-.72-.12-.9-.25-.14-.56-.11-.82-.11-1.51 0-3.01.01-4.52.01a5.82 5.82 0 00-4.18 1.84A4.08 4.08 0 004 4.61c-.02.42-.02.83.01 1.25.06.9.2 1.78.44 2.64.3.94.72 1.82 1.24 2.64.18.28.42.52.7.72.55.41 1.16.73 1.81.96.85.31 1.76.49 2.67.57.12.01.24.04.36.04.93.01 1.85-.1 2.74-.36.9-.26 1.75-.66 2.52-1.18.32-.21.5-.57.43-.95a.7.7 0 00-.76-.61c-.4.02-.72.26-.97.54-.51.58-1.11 1.03-1.79 1.36-.69.33-1.42.52-2.18.57-.72.05-1.44-.04-2.13-.25a4.06 4.06 0 01-2.13-1.2c-.52-.61-.88-1.33-1.08-2.11a8.03 8.03 0 01-.37-2.99c.04-.69.15-1.38.34-2.05.15-.58.38-1.13.66-1.66.2-.37.42-.72.67-1.06.14-.19.29-.37.44-.54.03-.04.04-.09.02-.12a.17.17 0 00-.18-.08C7.1.2 3.52.18.025.02zM14.77 10.32a3.37 3.37 0 003.38 3.38V17a6.69 6.69 0 01-6.68-6.68h3.3z"></path><path d="M14.77 10.32a3.37 3.37 0 003.38 3.38V17a6.69 6.69 0 01-6.68-6.68h3.3zM12.525.02c1.31-.02 2.61-.01 3.91-.02.08 0 .17.01.23.05.27.19.35.5.25.78s-.29.42-.57.44a17.73 17.73 0 01-3.06.01c-1.4-.05-2.65-.22-3.8-.6.56.58 1.22 1.07 1.95 1.49.76.44 1.59.75 2.47.93.48.09.97.15 1.46.18 1.43.12 2.86.01 4.24-.22a2.64 2.64 0 001.95-1.05c.44-.59.6-1.27.47-1.96s-.5-1.26-1.05-1.68c-1.08-.78-2.35-1.28-3.65-1.63-.96-.28-1.93-.49-2.9-.63-.18-.03-.35-.08-.5-.13a2.64 2.64 0 01-1.5-1.4c-.23-.58-.24-1.22-.05-1.82.15-.56.46-1.03.88-1.42.7-.64 1.5-.97 2.35-1.12.39-.07.8-.09 1.2-.1.79-.01 1.59-.01 2.38-.01a.6.6 0 00.5-.18c.24-.27.18-.72-.12-.9-.25-.14-.56-.11-.82-.11-1.51 0-3.01.01-4.52.01a5.82 5.82 0 00-4.18 1.84A4.08 4.08 0 004 4.61c-.02.42-.02.83.01 1.25.06.9.2 1.78.44 2.64.3.94.72 1.82 1.24 2.64.18.28.42.52.7.72.55.41 1.16.73 1.81.96.85.31 1.76.49 2.67.57.12.01.24.04.36.04.93.01 1.85-.1 2.74-.36.9-.26 1.75-.66 2.52-1.18.32-.21.5-.57.43-.95a.7.7 0 00-.76-.61c-.4.02-.72.26-.97.54-.51.58-1.11 1.03-1.79 1.36-.69.33-1.42.52-2.18.57-.72.05-1.44-.04-2.13-.25a4.06 4.06 0 01-2.13-1.2c-.52-.61-.88-1.33-1.08-2.11a8.03 8.03 0 01-.37-2.99c.04-.69.15-1.38.34-2.05.15-.58.38-1.13.66-1.66.2-.37.42-.72.67-1.06.14-.19.29-.37.44-.54.03-.04.04-.09.02-.12a.17.17 0 00-.18-.08C7.1.2 3.52.18.025.02zM14.77 10.32a3.37 3.37 0 003.38 3.38V17a6.69 6.69 0 01-6.68-6.68h3.3z"></path></svg> TikTok</a></div></div>
+                    </div>
+                    <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.016899949162!2d-58.3815704847699!3d-34.60373888045918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccacfPiso%201%2C%20Obelisco%2C%20C1043%20CABA!5e0!3m2!1ses!2sar!4v1678886500001!5m2!1ses!2sar" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container"><div class="social-links"><a href="https://instagram.com/bladeandfadebarbershop" target="_blank" aria-label="Instagram">Instagram</a><a href="https://tiktok.com/@bladeandfadebarbershop" target="_blank" aria-label="TikTok">TikTok</a></div><p>&copy; 2024 BLADE & FADE BARBERSHOP. Todo el flow reservado.</p><p>Diseño y Desarrollo con Actitud Urbana.</p></div>
+    </footer>
+
+    <button id="scrollToTopBtn" title="Volver Arriba">↑</button>
+
+    <script>
+        // === INICIO JS ===
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('main > section');
+        const navLinksContainer = document.getElementById('navLinks');
+        const burgerMenu = document.getElementById('burgerMenu');
+        const burgerIconOpen = document.getElementById('burgerIconOpen');
+        const burgerIconClose = document.getElementById('burgerIconClose');
+        const actualNavLinks = document.querySelectorAll('#navLinks a');
+        
+        function showSection(targetId, artistToSelect = null) {
+            sections.forEach(section => {
+                section.classList.toggle('active', '#' + section.id === targetId);
+            });
+            actualNavLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === targetId);
+            });
+
+            if (window.innerWidth <= 768 && navLinksContainer.classList.contains('active')) {
+                navLinksContainer.classList.remove('active');
+                if(burgerIconOpen) burgerIconOpen.style.display = 'block';
+                if(burgerIconClose) burgerIconClose.style.display = 'none';
+            }
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                const headerOffset = document.querySelector('header') ? document.querySelector('header').offsetHeight : 70; 
+                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerOffset - 10; 
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+
+            if (targetId === '#reservas' && artistToSelect) {
+                 const newArtistSelect = document.getElementById('booking-artist');
+                 if (newArtistSelect) newArtistSelect.value = artistToSelect.toLowerCase(); 
+            }
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('http')) return; 
+                if (this.closest('.booking-widget-container')) return; 
+
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const artistToSelect = this.dataset.artist || null; 
+                
+                if (history.state?.path !== targetId || (targetId === '#reservas' && history.state?.artist !== artistToSelect)) {
+                    history.pushState({ path: targetId, artist: artistToSelect }, '', targetId);
+                }
+                showSection(targetId, artistToSelect);
+            });
+        });
+
+        window.addEventListener('popstate', function(event) {
+            const currentHash = window.location.hash || '#home';
+            const artistToSelect = event.state ? event.state.artist : null;
+            showSection(currentHash, artistToSelect);
+        });
+        
+        const initialHash = window.location.hash || '#home';
+        const initialArtist = history.state ? history.state.artist : null;
+        // Llamar a showSection después de que el DOM esté completamente cargado para el scroll suave inicial
+        window.addEventListener('DOMContentLoaded', () => {
+             showSection(initialHash, initialArtist);
+        });
+
+
+        if(burgerMenu){
+            burgerMenu.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('active');
+                if(burgerIconOpen) burgerIconOpen.style.display = navLinksContainer.classList.contains('active') ? 'none' : 'block';
+                if(burgerIconClose) burgerIconClose.style.display = navLinksContainer.classList.contains('active') ? 'block' : 'none';
+            });
+        }
+
+
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryImageContainers = document.querySelectorAll('.styles-gallery-grid .gallery-image-container');
+        if (filterButtons.length > 0 && galleryImageContainers.length > 0) {
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const filter = button.getAttribute('data-filter');
+                    galleryImageContainers.forEach(container => {
+                        container.style.display = (filter === 'all' || container.getAttribute('data-category') === filter) ? 'block' : 'none';
+                    });
+                });
+            });
+        }
+        
+        const bookingServiceSelect = document.getElementById('booking-service');
+        const bookingArtistSelect = document.getElementById('booking-artist');
+        const timeSlotButtons = document.querySelectorAll('.time-slot-btn');
+        
+        const previewService = document.getElementById('preview-service');
+        const previewArtist = document.getElementById('preview-artist');
+        const previewDate = document.getElementById('preview-date'); 
+        const previewTime = document.getElementById('preview-time');
+        const previewDuration = document.getElementById('preview-duration');
+        const previewPrice = document.getElementById('preview-price');
+
+        function updateBookingPreview() {
+            if(bookingServiceSelect && previewService) {
+                const selectedServiceOption = bookingServiceSelect.options[bookingServiceSelect.selectedIndex];
+                previewService.textContent = selectedServiceOption.text.split('(')[0].trim(); 
+                switch(bookingServiceSelect.value) {
+                    case 'fade-pro': previewPrice.textContent = '$1800'; previewDuration.textContent = '45 min'; break;
+                    case 'corte-urbano': previewPrice.textContent = '$1500'; previewDuration.textContent = '40 min'; break;
+                    case 'barba-premium': previewPrice.textContent = '$1000'; previewDuration.textContent = '30 min'; break;
+                    case 'full-blade': previewPrice.textContent = '$2500'; previewDuration.textContent = '1h 15min'; break;
+                    case 'diseno-color': previewPrice.textContent = 'Consultar'; previewDuration.textContent = 'Variable'; break;
+                    default: previewPrice.textContent = 'N/A'; previewDuration.textContent = 'N/A';
+                }
+            }
+            if(bookingArtistSelect && previewArtist) {
+                 const selectedArtistOption = bookingArtistSelect.options[bookingArtistSelect.selectedIndex];
+                previewArtist.textContent = selectedArtistOption.value === "any" ? "Cualquiera" : selectedArtistOption.text;
+            }
+        }
+        
+        if (bookingServiceSelect) bookingServiceSelect.addEventListener('change', updateBookingPreview);
+        if (bookingArtistSelect) bookingArtistSelect.addEventListener('change', updateBookingPreview);
+
+        timeSlotButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                timeSlotButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                if(previewTime) previewTime.textContent = button.textContent + " hs";
+                updateBookingPreview(); 
+            });
+        });
+        if(previewDate) previewDate.textContent = "Selecciona una fecha arriba"; 
+        if(previewTime && document.querySelector('.time-slot-btn.selected')) {
+             previewTime.textContent = document.querySelector('.time-slot-btn.selected').textContent + " hs";
+        } else if (previewTime) {
+            previewTime.textContent = "Elige una hora";
+        }
+        updateBookingPreview();
+
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        if (scrollToTopBtn) {
+            window.onscroll = function() { 
+                if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) { 
+                    scrollToTopBtn.style.display = "block"; 
+                } else { 
+                    scrollToTopBtn.style.display = "none"; 
+                }
+            };
+            scrollToTopBtn.addEventListener('click', () => { window.scrollTo({top: 0, behavior: 'smooth'}); });
+        }
+    </script>
+</body>
+</html>
